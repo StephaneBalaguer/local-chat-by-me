@@ -33,9 +33,9 @@
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-         var addrserv = prompt('ip:port du serveur ?');
+        var addrserv = prompt('ip:port du serveur ?');
         // Connexion à socket.io
-        var socket = io.connect('http://'+addrserv);
+        var socket = io.connect('http://' + addrserv);
         // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
         var pseudo = prompt('Quel est votre pseudo ?');
         socket.emit('nouveau_client', pseudo);
@@ -60,16 +60,13 @@
         });
         // Ajoute un message dans la page
         function insereMessage(pseudo, message) {
-            $('#zone_chat').prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
+            $('#zone_chat').prepend('<p><strong>' + pseudo + '</strong> ' + lien(message) + '</p>');
         }
         function ajoutbalisecode() {
             if ($('#message').val() != "") {
                 var message = $('#message').val();
                 socket.emit('code', message);
-              /*  var message = $('#message').val();
-                message = "<div id=\"code\">" + message + "</div>"
-                socket.emit('message', message);
-                insereMessage(pseudo, message);*/
+             
                 $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
                 return false; // Permet de bloquer l'envoi "classique" du formulaire
             }
@@ -78,7 +75,7 @@
         function envoiecouleur() {
             if ($('#message').val() != "") {
                 var message = $('#message').val();
-                message = "<span style=\"color:" + document.getElementById("colorpicket").value + " \">" + message + "</span>"
+                message = "<span style=\"color:" + document.getElementById("colorpicket").value + "\"> " + message + " </span>"
                 socket.emit('message', message);
                 insereMessage(pseudo, message);
                 $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
@@ -86,15 +83,24 @@
             }
         }
 
-/*
-        function lien(message){
 
-                var too=message.split(" ");
-                for(i=0;i<too.length;i++)
-            var n = str.search("http://");
 
-        }*/
+        function lien(message) {
+            var out = "";
+            var too = message.split(' ');
+            for (i = 0; i < too.length; i++) {
+                var n = too[i].search("http://");
+                var m = too[i].search("https://");
+
+                if (n == 0 || m == 0) {
+                    too[i] = "<a href=\"" + too[i] + "\"\> " + too[i] + "</a>";
+                }
+                out += too[i] + " ";
+            }
+            return out;
+        }
     </script>
 </body>
+
 
 </html>
