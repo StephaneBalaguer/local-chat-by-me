@@ -1,0 +1,28 @@
+Serveur de chat en nodejs.
+
+
+----------------LANCEMENT---------------------------
+Pour lancer le serveur, se situer dans le dossier racine.
+	node app.js
+
+
+----------------UTILISATION-------------------------
+
+Se connecter au serveur depuis un navigateur web.
+L'adresse du serveur d'affiche dans la console.
+	PORT : 9090
+
+
+----------------INFOS-------------------------------
+
+Tout message envoyé peut être interprété par le navigateur (sauf en mode "CODE").
+En mode "CODE" aucun texte n'est interprété.
+
+
+----------------MODULES NODEJS---------------
+	-EXPRESS
+	-ENT
+	-HTTP
+	-SOCKET.IO
+	-IP
+
