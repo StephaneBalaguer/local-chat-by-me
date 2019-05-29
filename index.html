@@ -33,9 +33,16 @@
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var addrserv = prompt('ip:port du serveur ?');
+
+        var popip = window.location.href; 
+
+
+        //var addrserv = prompt('ip:port du serveur ?');
         // Connexion à socket.io
-        var socket = io.connect('http://' + addrserv);
+        var addrserv = popip.substr(0, popip.length-1);
+        console.log(addrserv);;
+        var socket = io.connect(addrserv);
+        
         // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
         var pseudo = prompt('Quel est votre pseudo ?');
         socket.emit('nouveau_client', pseudo);
@@ -66,7 +73,7 @@
             if ($('#message').val() != "") {
                 var message = $('#message').val();
                 socket.emit('code', message);
-             
+
                 $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
                 return false; // Permet de bloquer l'envoi "classique" du formulaire
             }
@@ -91,7 +98,6 @@
             for (i = 0; i < too.length; i++) {
                 var n = too[i].search("http://");
                 var m = too[i].search("https://");
-
                 if (n == 0 || m == 0) {
                     too[i] = "<a href=\"" + too[i] + "\"\>" + too[i] + "</a>";
                 }
