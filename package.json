@@ -9,6 +9,6 @@
     "socket.io": "^1.2.1",
     "socketio": "^1.0.0"
   },
-  "author": "Mateo21 <mateo21@email.com>",
+  "author": "Stéphane Balaguer <st.balaguer@gmail.com>",
   "description": "Un super Chat temps réel avec socket.io"
 }

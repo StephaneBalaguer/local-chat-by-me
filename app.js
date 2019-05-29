@@ -7,12 +7,6 @@ var io = require('socket.io').listen(server);
 
 app.use(express.static('public'));
 
-
-
-
-
-
-
 //rendre le dossier "public" accessible 
 app.use(express.static('public'));
 // Chargement de la page index.html
