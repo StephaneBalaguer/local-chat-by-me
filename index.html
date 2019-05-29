@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Super Chat INTM réel !</title>
+    <style>
+        #code {
+            background-color: black;
+            color: lime;
+        }
+
+        #zone_chat strong {
+            font-size: 120%;
+            color: white;
+            background-color: black;
+            padding: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Le super Chat d'INTM !</h1>
+    <form action="/" method="post" id="formulaire_chat">
+        <textarea rows="4" cols="100" name="message" id="message" placeholder="Votre message..." autofocus></textarea>
+        <input type="button" onclick="ajoutbalisecode()" value="Code" />
+        <input type="color" id="colorpicket" value="Code" />
+        <input type="button" onclick="envoiecouleur()" value="Envoyer !" />
+        <!--      <input type="submit" id="envoi_message" value="Envoyer" />-->
+    </form>
+    <pre id="zone_chat">
+        </pre>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+         var addrserv = prompt('ip:port du serveur ?');
+        // Connexion à socket.io
+        var socket = io.connect('http://'+addrserv);
+        // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
+        var pseudo = prompt('Quel est votre pseudo ?');
+        socket.emit('nouveau_client', pseudo);
+        document.title = pseudo + ' - ' + document.title;
+        // Quand on reçoit un message, on l'insère dans la page
+        socket.on('message', function (data) {
+            insereMessage(data.pseudo, data.message)
+        })
+        // Quand un nouveau client se connecte, on affiche l'information
+        socket.on('nouveau_client', function (pseudo) {
+            $('#zone_chat').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
+        })
+        // Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
+        $('#formulaire_chat').submit(function () {
+            if ($('#message').val() != "") {
+                var message = $('#message').val();
+                socket.emit('message', message); // Transmet le message aux autres
+                insereMessage(pseudo, message); // Affiche le message aussi sur notre page
+                $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
+            }
+            return false
+        });
+        // Ajoute un message dans la page
+        function insereMessage(pseudo, message) {
+            $('#zone_chat').prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
+        }
+        function ajoutbalisecode() {
+            if ($('#message').val() != "") {
+                var message = $('#message').val();
+                message = "<div id=\"code\">" + message + "</div>"
+                socket.emit('message', message);
+                insereMessage(pseudo, message);
+                $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
+                return false; // Permet de bloquer l'envoi "classique" du formulaire
+            }
+        }
+
+        function envoiecouleur() {
+            if ($('#message').val() != "") {
+                var message = $('#message').val();
+                message = "<span style=\"color:" + document.getElementById("colorpicket").value + " \">" + message + "</span>"
+                socket.emit('message', message);
+                insereMessage(pseudo, message);
+                $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
+                return false; // Permet de bloquer l'envoi "classique" du formulaire
+            }
+        }
+
+
+        function lien(message){
+
+                var too=message.split(" ");
+            var n = str.search("http://");
+
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "super-chat",
+  "version": "0.1.0",
+  "dependencies": {
+    "ent": "^0.1.0",
+    "express": "^3.3.8",
+    "http": "0.0.0",
+    "ip": "^1.1.5",
+    "socket.io": "^1.2.1",
+    "socketio": "^1.0.0"
+  },
+  "author": "Mateo21 <mateo21@email.com>",
+  "description": "Un super Chat temps réel avec socket.io"
+}
