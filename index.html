@@ -26,7 +26,7 @@
             <tr>
                 <td ROWSPAN=4>
                     <textarea rows="6" cols="100" name="message" id="message" placeholder="Votre message..."
-                        autofocus></textarea></td>
+                        autofocus onkeypress="return checklatouche(event)"></textarea></td>
                         <td> Son actif <input type="checkbox" id="checkboxetatson" onchange="changerson()" checked=true /><img id="imagehp" src="images/hp-on.png" style="width: 20px; height: 20px"/></td></tr>
 
               <tr><td>  <input type="button" onclick="ajoutbalisecode()" value="Code" /></td></tr>
@@ -36,9 +36,10 @@
     </form>
     <pre id="zone_chat">
     </pre>
+
     <audio controls style="visibility: hidden" id="notif">
-        <source src="audio/notif.mp3" type="audio/mpeg">etatson
-        Your browser does not support the audio element.etatson
+        <source src="audio/notif.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
     </audio>
     <audio controls style="visibility: hidden" id="online">
         <source src="audio/online.mp3" type="audio/mpeg">
@@ -49,8 +50,17 @@
     <script>
         var sonactif = true;
         var popip = window.location.href;
+var msga=document.getElementById("message");
+window.addEventListener("onkeypress", checklatouche,false);
 
 
+function checklatouche(e) {
+    //See notes about 'which' and 'key'
+    if (e.keyCode == 13) {
+        envoiecouleur();
+        return false;
+    }
+}
         //var addrserv = prompt('ip:port du serveur ?');
         // Connexion à socket.io
         var addrserv = popip.substr(0, popip.length - 1);
@@ -124,7 +134,7 @@
                 var n = too[i].search("http://");
                 var m = too[i].search("https://");
                 if (n == 0 || m == 0) {
-                    too[i] = "<a href=\"" + too[i] + "\"\>" + too[i] + "</a>";
+                    too[i] = "<a href=\"" + too[i] + "\" target=\"_blank\"\>" + too[i] + "</a>";
                 }
                 out += too[i] + " ";
             }
