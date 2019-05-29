@@ -65,9 +65,11 @@
         function ajoutbalisecode() {
             if ($('#message').val() != "") {
                 var message = $('#message').val();
+                socket.emit('code', message);
+              /*  var message = $('#message').val();
                 message = "<div id=\"code\">" + message + "</div>"
                 socket.emit('message', message);
-                insereMessage(pseudo, message);
+                insereMessage(pseudo, message);*/
                 $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
                 return false; // Permet de bloquer l'envoi "classique" du formulaire
             }
@@ -84,13 +86,14 @@
             }
         }
 
-
+/*
         function lien(message){
 
                 var too=message.split(" ");
+                for(i=0;i<too.length;i++)
             var n = str.search("http://");
 
-        }
+        }*/
     </script>
 </body>
 

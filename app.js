@@ -1,6 +1,7 @@
 var app = require('express')();
     server = require('http').createServer(app);
     io = require('socket.io').listen(server);
+    ent = require("ent");
 // Chargement de la page index.html
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/index.html');
@@ -16,6 +17,13 @@ io.sockets.on('connection', function (socket, pseudo) {
     // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
     socket.on('message', function (message) {
         socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
+    }); 
+
+    socket.on('code', function (message) {
+        message = ent.encode(message);
+        message = "<div id=\"code\">" + message + "</div>"
+        socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
+        socket.emit('message', {pseudo: socket.pseudo, message: message});
     }); 
 });
 
