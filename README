@@ -13,7 +13,7 @@ L'adresse du serveur d'affiche dans la console.
 	PORT : 9090
 
 
-----------------INFOS-------------------------------
+----------------INFOS------------------------------
 
 Tout message envoyé peut être interprété par le navigateur (sauf en mode "CODE").
 En mode "CODE" aucun texte n'est interprété.
@@ -25,36 +25,4 @@ En mode "CODE" aucun texte n'est interprété.
 	-HTTP
 	-SOCKET.IO
 	-IP
-<<<<<<< HEAD
-=======
-https://media2.giphy.com/media/xUA7bfDqAUodEx64o0/giphy.gif?cid=790b76115cee85436a48375955e7cc0a&rid=giphy.gif
-https://thumbs.gfycat.com/LeftBreakableCamel-small.gif
-
-<script>
-function popo(){
-document.body.style.backgroundImage = "url('https://thumbs.gfycat.com/LeftBreakableCamel-small.gif')"; }
-popo();
-</script>
-
-
-
-https://www.youtube.com/watch?v=WHYgN4lYJtU
-  <audio controls style="visibility: hidden" id="ty">
-        <source src="https://www.youtube.com/watch?v=WHYgN4lYJtU" type="audio/mpeg">
-        Your browser does not support the audio element.etatson
-    </audio>
-
-
-<script>
-function tryme(){
-document.getElementById("ty").play();}
-tryme();
-</script>
-
-function popo(){
-document.body.style.backgroundImage = "url('https://cook-shop.fr/16070-large_default/feuille-azyme-licorne.jpg')"; }
-popo();
-</script>
-<input type="button" onclick="popo()" value="test" />
->>>>>>> 404086dc0699289e15473cfa88da702161599488
 
