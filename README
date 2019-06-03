@@ -26,3 +26,32 @@ En mode "CODE" aucun texte n'est interprété.
 	-SOCKET.IO
 	-IP
 
+---------------------------ENGLISH---------------------------------------------
+
+Chat server made in NodeJS
+
+
+----------------STARTUP-----------------------------
+To start the serveur go in projet root folder 
+	node app.js
+
+
+----------------USAGE-------------------------------
+
+Use a webBrowser to connect to the server
+Serveur address is displayed in the console
+	PORT : 9090
+
+
+----------------INFOS------------------------------
+
+The message you send can be interpreted by the browser (except when sent with 'CODE')
+When sent with 'CODE' no text can be interpreted.
+
+
+----------------MODULES NODEJS---------------
+	-EXPRESS
+	-ENT
+	-HTTP
+	-SOCKET.IO
+-IP
