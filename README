@@ -15,9 +15,7 @@ L'adresse du serveur d'affiche dans la console.
 
 ----------------INFOS------------------------------
 
-Tout message envoyé peut être interprété par le navigateur (sauf en mode "CODE").
-En mode "CODE" aucun texte n'est interprété.
-
+Aucune message ne peut etre interprété par le navigateur
 
 ----------------MODULES NODEJS---------------
 	-EXPRESS
@@ -25,6 +23,8 @@ En mode "CODE" aucun texte n'est interprété.
 	-HTTP
 	-SOCKET.IO
 	-IP
+
+
 
 ---------------------------ENGLISH---------------------------------------------
 
@@ -45,8 +45,7 @@ Serveur address is displayed in the console
 
 ----------------INFOS------------------------------
 
-The message you send can be interpreted by the browser (except when sent with 'CODE')
-When sent with 'CODE' no text can be interpreted.
+No message can be interpreted by the bowser;
 
 
 ----------------MODULES NODEJS---------------
@@ -54,4 +53,4 @@ When sent with 'CODE' no text can be interpreted.
 	-ENT
 	-HTTP
 	-SOCKET.IO
--IP
+	-IP

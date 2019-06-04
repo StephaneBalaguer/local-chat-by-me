@@ -4,19 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Super Chat INTM réel !</title>
-    <style>
-        #code {
-            background-color: black;
-            color: lime;
-        }
-
-        #zone_chat strong {
-            font-size: 120%;
-            color: white;
-            background-color: black;
-            padding: 2px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
@@ -25,13 +13,21 @@
         <table>
             <tr>
                 <td ROWSPAN=4>
-                    <textarea rows="6" cols="100" name="message" id="message" placeholder="Votre message..."
-                        autofocus onkeypress="return checklatouche(event)"></textarea></td>
-                        <td> Son actif <input type="checkbox" id="checkboxetatson" onchange="changerson()" checked=true /><img id="imagehp" src="images/hp-on.png" style="width: 20px; height: 20px"/></td></tr>
+                    <textarea rows="6" cols="100" name="message" id="message" placeholder="Votre message..." autofocus
+                        onkeypress="return checklatouche(event)"></textarea></td>
+                <td> Son actif <input type="checkbox" id="checkboxetatson" onchange="changerson()" checked=true /><img
+                        id="imagehp" src="images/hp-on.png" style="width: 20px; height: 20px" /></td>
+            </tr>
 
-              <tr><td>  <input type="button" onclick="ajoutbalisecode()" value="Code" /></td></tr>
-               <tr><td> <input type="color" id="colorpicket" value="Code" /></td></tr>
-                <tr><td><input type="button" onclick="envoiecouleur()" value="Envoyer !" /></td></tr>
+            <tr>
+                <td> <input type="button" onclick="ajoutbalisecode()" value="Code" /></td>
+            </tr>
+            <tr>
+                <td> <input type="color" id="colorpicket" value="Code" /></td>
+            </tr>
+            <tr>
+                <td><input type="button" onclick="envoiecouleur()" value="Envoyer !" /></td>
+            </tr>
         </table>
     </form>
     <pre id="zone_chat">
@@ -45,114 +41,11 @@
         <source src="audio/online.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        var sonactif = true;
-        var popip = window.location.href;
-var msga=document.getElementById("message");
-window.addEventListener("onkeypress", checklatouche,false);
-
-
-function checklatouche(e) {
-    //See notes about 'which' and 'key'
-    if (e.keyCode == 13) {
-        envoiecouleur();
-        return false;
-    }
-}
-        //var addrserv = prompt('ip:port du serveur ?');
-        // Connexion à socket.io
-        var addrserv = popip.substr(0, popip.length - 1);
-        //console.log(addrserv);
-        var socket = io.connect(addrserv);
-
-        // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
-        var pseudo = prompt('Quel est votre pseudo ?');
-        socket.emit('nouveau_client', pseudo);
-        document.title = pseudo + ' - ' + document.title;
-        // Quand on reçoit un message, on l'insère dans la page
-        socket.on('message', function (data) {
-            insereMessage(data.pseudo, data.message);
-            if (sonactif == true) {
-                document.getElementById("notif").play();
-            }
-        })
-
-        socket.on('recepcode', function (data) {
-            insereMessage(data.pseudo, data.message);
-        })
-
-        // Quand un nouveau client se connecte, on affiche l'information
-        socket.on('nouveau_client', function (pseudo) {
-            $('#zone_chat').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
-            if (sonactif == true) {
-                document.getElementById('online').play();
-            }
-        })
-        // Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
-        $('#formulaire_chat').submit(function () {
-            if ($('#message').val() != "") {
-                var message = $('#message').val();
-                socket.emit('message', message); // Transmet le message aux autres
-                insereMessage(pseudo, message); // Affiche le message aussi sur notre page
-                $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
-            }
-            return false
-        });
-        // Ajoute un message dans la page
-        function insereMessage(pseudo, message) {
-            $('#zone_chat').prepend('<p><strong>' + pseudo + '</strong> ' + lien(message) + '</p>');
-        }
-        function ajoutbalisecode() {
-            if ($('#message').val() != "") {
-                var message = $('#message').val();
-                socket.emit('code', message);
-
-                $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
-                return false; // Permet de bloquer l'envoi "classique" du formulaire
-            }
-        }
-
-        function envoiecouleur() {
-            if ($('#message').val() != "") {
-                var message = $('#message').val();
-                message = "<span style=\"color:" + document.getElementById("colorpicket").value + "\"> " + message + " </span>"
-                socket.emit('message', message);
-                insereMessage(pseudo, message);
-                $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
-                return false; // Permet de bloquer l'envoi "classique" du formulaire
-            }
-        }
-
-
-
-        function lien(message) {
-            var out = "";
-            var too = message.split(' ');
-            for (i = 0; i < too.length; i++) {
-                var n = too[i].search("http://");
-                var m = too[i].search("https://");
-                if (n == 0 || m == 0) {
-                    too[i] = "<a href=\"" + too[i] + "\" target=\"_blank\"\>" + too[i] + "</a>";
-                }
-                out += too[i] + " ";
-            }
-            return out;
-        }
-
-        function changerson(){
-            sonactif=document.getElementById("checkboxetatson").checked;
-            if(sonactif==true){
-                document.getElementById('imagehp').src = 'images/hp-on.png';
-            }
-            else{
-                document.getElementById('imagehp').src = 'images/hp-off.png';
-            }
-
-        }
-    </script>
+    <script src="scripts/ent.js"></script>
+    <script src="scripts/scriptclient.js"></script>
 </body>
-
 
 </html>
