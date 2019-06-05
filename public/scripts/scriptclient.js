@@ -4,7 +4,7 @@ window.addEventListener("onkeypress", checklatouche, false);
 
 /*Lors de l'appuie de la touche ENTREE : Envoie du message */
 function checklatouche(e) {
-   
+
     if (e.keyCode == 13) {
         envoiecouleur();
         return false;
@@ -42,7 +42,8 @@ socket.on('message', function (data) {
  * ACTION : Affichage du message :  se ajout des balises html et affichage du message
  **/
 socket.on('code', function (data) {
-    var message = "<div id=\"code\">" + data.message + "</div>"
+    tab = data.message.split("\0");
+    var message = "<button onclick=\"copier(" + tab[1] + ")\">Copier ! </button><div id=\"code\" class=\"" + tab[1] + "\">" + tab[0] + "</div>"
     insereMessage(data.pseudo, message);
 })
 
@@ -156,5 +157,21 @@ function changerson() {
     else {
         document.getElementById('imagehp').src = 'images/hp-off.png';
     }
+
+}
+
+
+function copier(nbr){
+    var txt = document.getElementsByClassName(nbr)[0].innerHTML;
+    console.log(txt);
+    const el = document.createElement('textarea');
+    el.value = txt;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
 
 }

@@ -22,6 +22,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 var ipttp = require("ip");
 const fs = require('fs');
+var compteurpourlecode= 0;
 
 
 app.use(express.static('public'));
@@ -60,8 +61,11 @@ io.sockets.on('connection', function (socket, pseudo) {
         save("(CODE)" + socket.pseudo + " : " + message);
 
         message = ent.encode(message);
+        message=message + "\0" + compteurpourlecode;
+       
         socket.broadcast.emit('code', { pseudo: socket.pseudo, message: message });
         socket.emit('code', { pseudo: socket.pseudo, message: message });
+        compteurpourlecode++;
     });
 });
 
@@ -90,6 +94,7 @@ function genererTimeStamp() {
 
 if (genererleslogs) {
     var logStream = fs.createWriteStream('log/log - ' + genererTimeStamp() + '.txt', { 'flags': 'a' });
+    save(genererTimeStamp() + "App started");
 }
 
 function save(message) {
