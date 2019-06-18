@@ -84,7 +84,20 @@ function save(message) {
         logStream.write(genererTimeStamp() + ' ' + message + "\r\n");
     }
 }
-
+console.log("\r\n\r\n\r\n\r\n");
+console.log("\r\n\r\n\r\n\r\n");
+console.log(" ______  __    __  ________  __       __         ______   __    __   ______  ________ ");
+console.log("|      \\|  \\  |  \\|        \\|  \\     /  \\       /      \\ |  \\  |  \\ /      \\|        \\ ");
+console.log(" \\$$$$$$| $$\\ | $$ \\$$$$$$$$| $$\\   /  $$      |  $$$$$$\\| $$  | $$|  $$$$$$\\\\$$$$$$$$");
+console.log("  | $$  | $$$\\| $$   | $$   | $$$\\ /  $$$      | $$   \\$$| $$__| $$| $$__| $$  | $$   ");
+console.log("  | $$  | $$$$\\ $$   | $$   | $$$$\\  $$$$      | $$      | $$    $$| $$    $$  | $$   ");
+console.log("  | $$  | $$\\$$ $$   | $$   | $$\\$$ $$ $$      | $$   __ | $$$$$$$$| $$$$$$$$  | $$   ");
+console.log(" _| $$_ | $$ \\$$$$   | $$   | $$ \\$$$| $$      | $$__/  \\| $$  | $$| $$  | $$  | $$   ");
+console.log("|   $$ \\| $$  \\$$$   | $$   | $$  \\$ | $$       \\$$    $$| $$  | $$| $$  | $$  | $$   ");
+console.log(" \\$$$$$$ \\$$   \\$$    \\$$    \\$$      \\$$        \\$$$$$$  \\$$   \\$$ \\$$   \\$$   \\$$   ");
+                                                                                      
+console.log("\r\n\r\n\r\n\r\n")   ;                                                                              
+console.log("\r\n\r\n\r\n\r\n");
 console.log("==========================================");
 console.log("Avez vous configure les logs dans le fichier app.js");
 console.log("==========================================");
@@ -93,5 +106,6 @@ console.log("==========================================");
 console.log("IP SERVEUR : " + ipttp.address() + ":9090");
 console.log("==========================================");
 console.log("Generation des log : " + genererleslogs);
+
 
 server.listen(9090);
