@@ -16,9 +16,12 @@ function checklatouche(e) {
 var addrserv = popip.substr(0, popip.length - 1);
 var socket = io.connect(addrserv);
 
-
+var pseudo = null;
 /* On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre*/
-var pseudo = prompt('Quel est votre pseudo ?');
+while (pseudo == null || pseudo == "") {
+    pseudo = prompt('Quel est votre pseudo ?');
+}
+
 socket.emit('nouveau_client', pseudo);
 document.title = pseudo + ' - ' + document.title;
 
@@ -27,13 +30,37 @@ document.title = pseudo + ' - ' + document.title;
  * ENTREE OBJET data  : data.message | data.pseudo
  * ACTION : Affichage du message :  separation des infos dans le message ( message \0 couleur ) ajout des balises html et affichage du message
  **/
-socket.on('message', function (data) {
-    tab = data.message.split("\0");
-    var messageaafficher = "<span style=\"color:" + tab[1] + "\"> " + lien(tab[0]) + " </span>";
-    insereMessage(data.pseudo, messageaafficher);
-    if (sonactif == true) {
-        document.getElementById("notif").play();
+socket.on('reception', function (data) {
+    var obj = JSON.parse(data);
+    var message;
+    if (obj.type == "text") {
+        message = "<span style=\"color:" + obj.couleur + "\"> " + lien(obj.message) + " </span>";
+        insereMessage(obj.pseudo, message);
+        if (sonactif == true) {
+            document.getElementById("notif").play();
+        }
     }
+    if (obj.type == "code") {
+        message = "<button onclick=\"copier(" + obj.num + ")\">Copier ! </button><div id=\"code\" class=\"" + obj.num + "\">" + obj.message + "</div>";
+        insereMessage(obj.pseudo, message);
+        if (sonactif == true) {
+            document.getElementById("notif").play();
+        }
+    }
+    if (obj.type == "infoconnection") {
+        $('#zone_chat').prepend('<p><em>' + obj.pseudo + ' a rejoint le Chat !</em></p>');
+        if (sonactif == true) {
+            document.getElementById('online').play();
+        }
+    }
+    if (obj.type == "infodeconnection") {
+        $('#zone_chat').prepend('<p><em>' + obj.pseudo + ' est parti !</em></p>');
+        if (sonactif == true) {
+            document.getElementById('online').play();
+        }
+    }
+
+
 })
 
 
@@ -41,24 +68,24 @@ socket.on('message', function (data) {
  * ENTREE OBJET data  : data.message | data.pseudo
  * ACTION : Affichage du message :  se ajout des balises html et affichage du message
  **/
-socket.on('code', function (data) {
+/*socket.on('code', function (data) {
     tab = data.message.split("\0");
     var message = "<button onclick=\"copier(" + tab[1] + ")\">Copier ! </button><div id=\"code\" class=\"" + tab[1] + "\">" + tab[0] + "</div>"
     insereMessage(data.pseudo, message);
 })
-
+*/
 
 /** EVENEMENT  nouveau_client
  * ENTREE STRING pseudo
  * ACTION : Affichage du message :  "--STRING pseudo-- a rejoint...."
  **/
-socket.on('nouveau_client', function (pseudo) {
+/*socket.on('nouveau_client', function (pseudo) {
     $('#zone_chat').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
     if (sonactif == true) {
         document.getElementById('online').play();
     }
 })
-
+*/
 
 /** FONCTION  insereMessage
  * ENTREE : STRING pseudo , STRING message 
@@ -84,12 +111,13 @@ function insereMessage(pseudo, message) {
 function ajoutbalisecode() {
     if ($('#message').val() != "") {
         var message = $('#message').val();
-        socket.emit('code', message);
-
-        $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
-        return false; // Permet de bloquer l'envoi "classique" du formulaire
+        var aEnvoyer = '{"pseudo" : "' + encode(pseudo) + '","type" : "code","message" : "' + encode(message) + '", "couleur" : " "}';
+        socket.emit('message', aEnvoyer);
     }
+    $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
+    return false; // Permet de bloquer l'envoi "classique" du formulaire
 }
+
 
 
 /** FONCTION  envoiecouleur
@@ -101,13 +129,15 @@ function ajoutbalisecode() {
  * separateur utilise : \0
  **/
 function envoiecouleur() {
+
     if ($('#message').val() != "") {
         var message = $('#message').val();
-        message = message + "\0" + document.getElementById("colorpicket").value;
-        socket.emit('message', message);
-        $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
-        return false; // Permet de bloquer l'envoi "classique" du formulaire
+        var couleur = document.getElementById("colorpicket").value;
+        var aEnvoyer = '{"pseudo" : "' + encode(pseudo) + '","type" : "text","message" : "' + encode(message) + '", "couleur" : "' + encode(couleur) + '"}';
+        socket.emit('message', aEnvoyer);
     }
+    $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
+    return false; // Permet de bloquer l'envoi "classique" du formulaire
 }
 
 
@@ -161,9 +191,8 @@ function changerson() {
 }
 
 
-function copier(nbr){
+function copier(nbr) {
     var txt = document.getElementsByClassName(nbr)[0].innerHTML;
-    console.log(txt);
     const el = document.createElement('textarea');
     el.value = txt;
     el.setAttribute('readonly', '');
